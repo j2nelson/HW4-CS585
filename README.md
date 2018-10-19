@@ -13,7 +13,7 @@ Part 2: Tracking bats
 
 Part 3: cell tracking 
 1) cell detection - detect the position - *** JAMIE ***
-2) use P2(1) and P2(2) for tracking - *** KEN ***
+2) use P2(1) and P2(2) for tracking --- (SAME AS Part 2)
 3) visualization (make a video) - *** JASON ***
 
 Part 4: Web page
