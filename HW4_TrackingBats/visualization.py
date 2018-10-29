@@ -40,3 +40,11 @@ def output_visualization(dir, frames):
     for output in frames:
         cv2.imwrite(dir+str(count)+'.jpeg',output)
         count += 1
+
+    # Define the codec and create VideoWriter object
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    out = cv2.VideoWriter(dir+'/output_video.avi', fourcc, 3.0, (640,480))
+    for output in frames:
+        output = cv2.resize(output, (640,480))
+        out.write(output)
+    out.release()

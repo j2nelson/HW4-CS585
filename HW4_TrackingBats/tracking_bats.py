@@ -14,7 +14,8 @@ def main():
 
     
     #----------------------------dummy test------------------------------------------
-    '''
+    test = True
+    if test:
         #This dummy test provides a simple example of using the visualization function
         
         # dummy data -> one track with always the first position in txt files
@@ -26,7 +27,6 @@ def main():
         # store the visualized frames
         output_visualization('./output/', visualized_frames)
         print('all set. cheers~ Jason')
-    '''
 
 if __name__ == '__main__':
     main()
