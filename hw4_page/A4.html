@@ -1,251 +1,313 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> CS585 Homework : HW4 Student Name Jamie Nelson </title>
-<style>
+	<title> CS585 Homework : HW4 Student Name Jamie Nelson </title>
+	<style>
 
-body{
-font-family: 'Trebuchet MS', Verdana;
-}
-p{
-font-family: 'Trebuchet MS', Times;
-margin: 10px 10px 15px 20px;
-}
-h3{
-margin: 5px;
-}
-h2{
-margin: 10px;
-}
-h1{
-margin: 10px 0px 0px 20px;
-}
-div.main-body{
-align:center;
-margin: 30px;
-}
-hr{
-margin:20px 0px 20px 0px;
-}
+		body{
+		font-family: 'Trebuchet MS', Verdana;
+		}
+		p{
+		font-family: 'Trebuchet MS', Times;
+		margin: 10px 10px 15px 20px;
+		}
+		h3{
+		margin: 5px;
+		}
+		h2{
+		margin: 10px;
+		}
+		h1{
+		margin: 10px 0px 0px 20px;
+		}
+		div.main-body{
+		align:center;
+		margin: 30px;
+		}
+		hr{
+		margin:20px 0px 20px 0px;
+		}
 
-.img{
-  height: 260px;
-}
+		.img{
+		  height: 260px;
+		}
 
-.res{
-  height: 180px;
-}
+		.res{
+		  height: 180px;
+		}
 
-.c{
-   width: 500px;
-   border: 1px solid black;
-   vertical-align: middle;
-   text-align: center;
-}
+		.c{
+		   width: 500px;
+		   border: 1px solid black;
+		   vertical-align: middle;
+		   text-align: center;
+		}
 
-td {
+		td {
 
-}
-</style>
+		}
+	</style>
 </head>
 
 <body>
-<center>
-<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
-width="119" height="120"></a>
-</center>
+	<center>
+		<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+		width="119" height="120"></a>
+	</center>
 
-<h1>Assignment 4</h1>
-<p>
- CS 585 HW 4 <br>
- Jamie Nelson<br>
- Teammate: Shijie Zhao, Jiangshan Luo  <br>
- Oct. 31. 2018
-</p>
+	<h1>Assignment 4</h1>
+	<p>
+	 CS 585 HW 4 <br>
+	 Jamie Nelson<br>
+	 Teammate: Shijie Zhao, Jiangshan Luo  <br>
+	 Oct. 31. 2018
+	</p>
 
-<div class="main-body">
-<hr>
-<h2> Problem Definition </h2>
-<p>
-<!--
-Give a concise description of current problem.  What
-needs to be solved?  Why is the result useful?  Do you make any assumptions?
-What are the anticipated difficulties?
--->
-    There are three main parts to this assignment: </p>
-    <p>
-    1) In the first part of the assignment we are given frames of a person playing the piano.
-    Our task is to segment the left and right hand from each frame. </p>
-<p>
-    The second and third part of this assignment is to track objects in a video. </p>
-    <p>
-    2) In the second part, we are given the frames of a video of bats flying through the sky.
-    We are also provided the segmention of those bats in the image by (x,y) coordinates in a
-    CSV file. We need to use the kalman filter to track the bats through each frame.
-  </p><p>
-    3) Finally, the third part we are given a frames of a video of cells moving in a petri dish.
-    We have to provide a segmention of the cells and use the kalman filter to track each cell
-    through the frames of the video.
+	<div class="main-body">
+	<hr>
+	<h2> Problem Definition </h2>
 
-    For each of these sections, we have to create a visual represention of our results.
-</p>
+	<!--
+	Give a concise description of current problem.  What
+	needs to be solved?  Why is the result useful?  Do you make any assumptions?
+	What are the anticipated difficulties?
+	-->
+		<p><b>There are three main parts to this assignment: </b></p>
+		<p style="padding-left:30px;">
+			1) In the first part of the assignment we are given frames of a person playing the piano. Our task is to segment the left and right hand from each frame. 
+		</p>
+		
+		<p><b>The second and third part of this assignment is to track objects in a video.</b></p>
+		
+		<p style="padding-left:30px;">
+			2) In the second part, we are given the frames of a video of bats flying through the sky.
+			We are also provided the segmentation of those bats in the image by (x,y) coordinates in a
+			CSV file. We need to use the Kalman Filter to track the bats through each frame.
+			<br/><br/>
+			
+			3) Finally, the third part we are given a frames of a video of cells moving in a petri dish.
+			We have to provide a segmentation of the cells and use the Kalman Filter to track each cell
+			through the frames of the video.
+		</p>
+		
+		<p><b>For each of these sections, we have to create a visual representation of our results.</b></p>
 
-<hr>
-<h2> Method and Implementation </h2>
-<p>
-<!--
-  Give a concise description of the implemented method. For example, you might
-  describe the motivation of your idea, the algorithmic steps of your methods, or
-  the mathematical formulation of your method.
--->
-  <h2> Part 1 </h2>
-  <ol>
-    <li>Pre-processing</li>
-    <p>
-    </p>
+	<hr>
+	<h2> Method and Implementation </h2>
+	<p>	
+	<!--
+	  Give a concise description of the implemented method. For example, you might
+	  describe the motivation of your idea, the algorithmic steps of your methods, or
+	  the mathematical formulation of your method.
+	-->
+	  <h3> Part 1 - Segmentation of Hands</h3>
+	  <ol>
+		<li> Pre-processing </li>
+		<p>
+			Firstly, we load all the image frames into a list of matrices. Then, we calculate the average pixel values for all the frames and store it as a new image. The average image is shown below:<br/>
+			
+			<img class="img" src='./result/output_part1/avg_img.png'> <img>
+		</p>
+		
+		<li> Segmentation </li>
+		<p>
+			There are two major steps in the segmentation part. First, we compute the differences between image frames and the average image to get the movement energy in each frame. By doing this, we can easily get rid of the static regions (refers to the Figure below).<br/>
+			
+			<img class="img" src='./result/output_part1/movement_energy.png'> <img>
+			
+			As we can see, there are still lots of noise blobs and the useless body regions left. In the second place, in order to segment the hand regions, we apply the skin color detection method on the result we get (Figure below). Finally, we pick the top three largest blobs, which is the hand and head regions, since these regions are significantly larger than the noise blobs.<br/>
+			
+			<img class="img" src='./result/output_part1/skin_color_detection.png'> <img>
+		</p>
+		
+		<li> Visual representation </li>
+		<p>
+			Bounding boxes are drawn with the labels of the hand above them (left/right/overlap hand(s)). The example shown below is a special case where two hands are overlapping.<br/>
+			
+			<img class="img" src='./result/output_part1/13.jpeg'> <img>
+		</p>
+	  </ol>
+	  <h3> Part 2 - Tracking Bats</h3>
+	  <ol>
+		<li>Pre-processing</li>
+		<p>
+			Load the frames and localization data and save them into data structures (list/panda dataframe).
+		</p>
+		
+		<li>Tracking</li>
+		<ul>
+			<li> Prediction - Kalman Filter </li>
+			<p>
+				
+			</p>
+			
+			<li> Data Association - Hungarian/Greedy Algorithm </li>
+			<p>
+				
+			</p>
+		</ul>
 
-    <li>Visual representation</li>
-    <p>
-    </p>
-  </ol>
-  <h2> Part 2 </h2>
-  <ol>
-    <li>Pre-processing</li>
-    <p>
-    </p>
-    <li>Tracking</li>
-    <p>
-    </p>
+		<li>Visual representation</li>
+		<p>
+			After the tracing process, we get a list of sequences respecting to time, which contain the traces for the objects in the image frames. Then, we use <code> cv2.line() </code> to visualize the trace of each object step by step. Finally, we stored the visualized frames into a video which is provided in the Results section. 
+		</p>
+	  </ol>
+	  <h3> Part 3 - Tracking Cells</h3>
+	  <ol>
+		<li>Pre-processing</li>
+		<p>
+			Same as Part 2. Here, since we only have cell images available, the segmentation method is required. 
+		</p>
+		
+		<li>Segmentation</li>
+		<p>
+			..............................................
+		</p>
+		
+		<li>Tracking</li>
+		<p>
+			Same as Part 2.
+		</p>
 
-    <li>Visual representation</li>
-    <p>
-    </p>
-  </ol>
-  <h2> Part 3 </h2>
-  <ol>
-    <li>Pre-processing</li>
-    <p>
-    </p>
-    <li>Tracking</li>
-    <p>
-    </p>
+		<li>Visual representation</li>
+		<p>
+			Same as Part 2.
+		</p>
+	  </ol>
+	</p>
 
-    <li>Visual representation</li>
-    <p>
-    </p>
-  </ol>
-</p>
+	<h3> functions created: </h3>
+	  <!--
+	  Briefly outline the functions you created in your code to carry out the
+	  algorithmic steps you described earlier.-->
+	<p>
+		<code>skinDetect</code>: find the pixels with the skin color<br/>
+		<code>three_largest_blobs</code>: retrieve the top three largest blobs in the image<br/>
+		<code>preprocess</code>: load the frames and location data<br/>
+		<code>visualize_track</code>: draw the traces of objects in the frames<br/>
+		<code>output_visualization</code>: generate a video representation for the output<br/>
+		<code>calculate_cost</code>: determine the cost matrix given two sets of points<br/>
+		<code>greedy</code>: first predicted_value (object tracked for the longest time) gets highest priority so assign smallest value distance to measurement to that prediction and so on through all predictions<br/>
+		<code>data_association</code>: Formulate the 2D assignment problem and obtain a global optimal<br/>
+		<code>Kalman_Filter</code>: Predict the measurements and their covariances to estimate the validation gates. Perform tracking by updating the state of each object and its covariance from the assignment result.<br/>
+	</p>
 
-<p>
+	<hr>
+	<h2>Experiments</h2>
+	<p>
+	  The experiment is completed in Python. <b>Source Code can be found here:</b>
+	  <ol>
+		  <li><a href="./code/HW4_HandsDetection.pdf"> Hands Detection </a></li>
+		  <li><a href="./code/HW4_TrackingBats"> Tracking Bats </a></li>
+		  <li><a href="./code/HW4_TrackingCells"> Tracking Cells </a></li>
+	  </ol>
+	</p>
+	
+	<p>
+	  The resources we used:
+	  <ol>
+		  <li> Piano Images </li>
+		  <li> Bat Images /li>
+		  <li> Bats Localization </li>
+		  <li> Cell Images </li>
+	  </ol>
+	</p>
+	<!--
+	<p>
+	Describe your experiments, including the number of tests that you
+	performed, and the relevant parameter values.
 
-  <!--
-  Briefly outline the functions you created in your code to carry out the
-  algorithmic steps you described earlier.-->
-functions created:<br /><br />
+	</p>
 
-<code>ex</code>: <br />
-</p>
+	<p>
+	Define your evaluation
+	metrics, e.g., detection rates, accuracy, running time. </p>
+	-->
 
-<hr>
-<h2>Experiments</h2>
-<p>
-      The experiment is completed in Python. <b>Source Code can be found
-      <a href="./code"> here</a>.</b>
-    </p>
-    <table>
-      <caption><h3>name</h3></caption>
-      <tr>
-        <th> F </th>
-        <th> T </th>
-        <th> P </th>
-        <th> I </th>
-      </tr>
-      <tr>
-        <td>  </td>
-        <td>  </td>
-        <td> </td>
-        <td> </td>
-      </tr>
-    </table>
+	<hr>
+	<h2> Results</h2>
+	<!--
+	List your experimental results.  Provide examples of input images and output
+	images. If relevant, you may provide images showing any intermediate steps.  If
+	your work involves videos, do not submit the videos but only links to them.
+	</p>
+	-->
+	<p>
+		The results for the three parts are shown below:
+	</p>
+	
+	<h3> Part 1 - Segmentation of Hands</h3>
+	<video width="800" height="600" controls>
+		<source src="./result/output_part1/output_video.mp4" type="video/mp4">
+	</video>
+	
+	<h3> Part 2 - Tracking Bats</h3>
+	<video width="800" height="600" controls>
+		<source src="" type="video/mp4">
+	</video>
+	
+	<h3> Part 3 - Tracking Cells</h3>
+	<video width="800" height="600" controls>
+		<source src="" type="video/mp4">
+	</video>
+	
+	<hr>
+	<h2> Discussion </h2>
+	<ul>
+		<li> In part 1, we detected the positions of hand in all image frames provided, including the overlapping cases. However, it's still difficult to completely segment the hand blobs due to the variances in pixel color. Different strategies other than skin color detection might be used to gain a higher performance. </li>
+		<li> In part 2, ............................................... </li>
+		<li> In part 3, ............................................... </li>
+	</ul>
 
-<!--
-<p>
-Describe your experiments, including the number of tests that you
-performed, and the relevant parameter values.
+	<!--
+	Discuss your method and results:
+	<ul>
+	<li>What are the strengths and weaknesses of your method? </li>
+	<li>Do your results show that your method is generally successful or
+		 are there limitations? Describe what you expected to find in your
+		 experiments, and how that differed or was confirmed by your
+		 results. </li>
+	<li>Potential future work. How could your method be improved?   What
+	would you try (if you had more time) to overcome the
+	failures/limitations of your work?</li>
+	</ul>
+	-->
 
-</p>
+	<hr>
+	<h2> Conclusion </h2>
+	<!--
+	Based on your discussion, what are your conclusions?  What is your
+	main message?-->
+	<p>
+		We successfully recognized and visualized the hand positions of the pianist in part 1. For part 2 and 3, the Kalman Filter combined with the Data Association methods works fairly well and we have segmented (part 3), tracked and visualized the traces for all the detected objects. 
+	</p>
 
-<p>
-Define your evaluation
-metrics, e.g., detection rates, accuracy, running time. </p>
--->
+	<hr>
+	<h2> Credits and Bibliography </h2>
+	<!--
+	<p>
 
-<hr>
+	Cite any papers or other references you consulted while developing
+	your solution.  Citations to papers should include the authors, the
+	year of publication, the title of the work, and the publication
+	information (e.g., book name and publisher; conference proceedings and
+	location; journal name, volume and pages; technical report and
+	institution).
 
-<h2> Results</h2>
-<p>
-<!--
-List your experimental results.  Provide examples of input images and output
-images. If relevant, you may provide images showing any intermediate steps.  If
-your work involves videos, do not submit the videos but only links to them.
-</p>
--->
+	<p>
+	Material on the web should include the url and date of access.
+	</p>
 
-</p>
-<hr>
-<h2> Discussion </h2>
+	<p>
+	Credit any joint work or discussions with your classmates.
+	</p>
+	<hr>
+	-->
+	<p>
+				CS 585 - Lab 7 Solution - Teaching Fellow Yifu Hu <br>
+				Classmates: Shijie Zhao, Jiangshan Luo
+	</p>
 
-
-<!--
-Discuss your method and results:
-<ul>
-<li>What are the strengths and weaknesses of your method? </li>
-<li>Do your results show that your method is generally successful or
-     are there limitations? Describe what you expected to find in your
-     experiments, and how that differed or was confirmed by your
-     results. </li>
-<li>Potential future work. How could your method be improved?   What
-would you try (if you had more time) to overcome the
-failures/limitations of your work?</li>
-</ul>
--->
-
-<hr>
-<h2> Conclusion </h2>
-
-<p>
-<!--
-Based on your discussion, what are your conclusions?  What is your
-main message?-->
-
-</p>
-
-<hr>
-<h2> Credits and Bibliography </h2>
-<!--
-<p>
-
-Cite any papers or other references you consulted while developing
-your solution.  Citations to papers should include the authors, the
-year of publication, the title of the work, and the publication
-information (e.g., book name and publisher; conference proceedings and
-location; journal name, volume and pages; technical report and
-institution).
-
-<p>
-Material on the web should include the url and date of access.
-</p>
-
-<p>
-Credit any joint work or discussions with your classmates.
-</p>
-<hr>
--->
-<p>
-            CS 585 - Lab 7 Solution - Teaching Fellow Yifu Hu <br>
-            Classmates: Shijie Zhao, Jiangshan Luo
-</p>
-
-</div>
+	</div>
 </body>
 </html>

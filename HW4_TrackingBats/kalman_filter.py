@@ -121,7 +121,7 @@ def kalmanFilter(image_frames, measurements):
         # process covariance mat update
         p_k = (I - K)* p_k_predict
 
-        predictions.append([x_k_prev, x_k])
+        predictions.append([x_k_prev[:, :2], x_k[:, :2]])
     return predictions
 
 # kalmanFilter(locFiles)
