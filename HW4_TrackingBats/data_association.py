@@ -44,12 +44,12 @@ def data_association(predicted_values, measurements):
     # matching based on cost 
     assignment = greedy(cost_matrix)
 
-    hungarian = Hungarian(cost_matrix)
-    hungarian.calculate()
+    # hungarian = Hungarian(cost_matrix)
+    # hungarian.calculate()
 
-    assignment2 = hungarian.get_results()
+    # assignment2 = hungarian.get_results()
 
-    print(assignment)
-    print(assignment2)
+    # print(assignment)
+    # print(assignment2)
 
     return assignment
