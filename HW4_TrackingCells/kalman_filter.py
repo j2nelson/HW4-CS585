@@ -10,12 +10,15 @@ from segmentation import *
 from data_association import *
 
 def kalman_filter(tracked_objects, current_frame):
-    predictions = [[1, 3], [2, 1], [5, 5]]
+    #predictions = [[1, 3], [2, 1], [5, 5]]
 
     measurements = find_measurements(current_frame)
-    measurements = [[1, 5], [2, 4], [5, 2]]
+    #measurements = [[1, 5], [2, 4], [5, 2]]
 
-    #assignment = data_association(predictions, measurements)
+    assignment = data_association(predictions, measurements)
     
+    #updated_state = (predictions - measurements) ** 2
+    
+    #tracked_objects.append(updated_state)
     return
 
