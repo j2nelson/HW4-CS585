@@ -35,21 +35,28 @@ def greedy(matrix):
 # Description: Formulate the 2D assignment problem and obtain a global optimal
 # solution as the best assignment hypothesis.
 # Input - predicted_values array & measurement array
-# Output - assignment pairs (index of predicted_value : index of measurement)
+# Output - assignment array where the position is index of predicted_value
+# and the value is the index of measurement
+# ex. prediction 0 goes to measurement 2 would be [2]
 def data_association(predicted_values, measurements):
 
     # compute the cost for each i prediction and j measurement
     cost_matrix = calculate_cost(predicted_values, measurements)
 
     # matching based on cost 
-    assignment = greedy(cost_matrix)
+    # assignment_greedy = greedy(cost_matrix)
 
-    # hungarian = Hungarian(cost_matrix)
-    # hungarian.calculate()
+    hungarian = Hungarian(cost_matrix)
+    hungarian.calculate()
 
-    # assignment2 = hungarian.get_results()
+    assignment_hungarian = hungarian.get_results()
 
-    # print(assignment)
-    # print(assignment2)
+    final_assignment = [None] * len(assignment_hungarian)
 
-    return assignment
+    for f in range(len(final_assignment)):
+        for a in assignment_hungarian:
+            if a[0] == f:
+                final_assignment[f] = a[1]
+                assignment_hungarian.remove(a)
+
+    return final_assignment
