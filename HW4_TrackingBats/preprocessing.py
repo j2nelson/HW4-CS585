@@ -16,10 +16,16 @@ import pandas as pd
 '''
 def preprocess(img_dir, loc_dir):
     # read data
+
     loc_path = abspath(loc_dir)
     loc_list = [join(loc_path, file) for file in listdir(loc_path) if isfile(join(loc_path, file)) and 'txt' in file]
+    loc_list.sort()
+
     image_path = abspath(img_dir)
     image_list = [join(image_path, file) for file in listdir(image_path) if isfile(join(image_path, file)) and 'ppm' in file] 
+    image_list.sort()
+
+
 
     # load data
     image_frames = []
@@ -30,7 +36,7 @@ def preprocess(img_dir, loc_dir):
 
     loc_data = []
     for file in loc_list:
-        dataframe = pd.read_table(file, sep=',')
+        dataframe = pd.read_csv(file, names=['x', 'y'])
         loc_data.append(dataframe.copy())
     
     return image_frames, loc_data
