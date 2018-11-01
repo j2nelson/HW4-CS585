@@ -18,14 +18,19 @@ def main():
 
     measurements = []
     for frame in image_frames:
-        measurements.append(find_measurements(frame))
+        measurement = np.array(find_measurements(frame))
+        measurementDF = pd.DataFrame(measurement, columns = ['x', 'y'])
+        # print(measurementDF.shape)
+        # print(measurementDF)
+        measurements.append(measurementDF)
+#    print(measurements[0])
 
     tracks = kalmanFilter(image_frames, measurements)
     # print(tracks)
 
     # create a video of the tracks in each frame 
-    visualized_frames = visualize_track(image_frames, tracks)
-    output_visualization('./output/', visualized_frames)
+    # visualized_frames = visualize_track(image_frames, tracks)
+    # output_visualization('./output/', visualized_frames)
 
 if __name__ == '__main__':
     main()

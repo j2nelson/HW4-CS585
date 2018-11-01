@@ -20,13 +20,13 @@ def calculate_cost(set_A, set_B):
 # Input: cost matrix
 # Output: the assignment array (predicted value index : measurement index)
 def greedy(matrix):
-
+    threshold = 300
     assignment = [None] * len(matrix)
 
     for i in range(len(matrix)):
         smallest_value = sys.maxsize
         for j in range(len(matrix[i])):
-            if matrix[i][j] < smallest_value and j not in assignment:
+            if matrix[i][j] < threshold and matrix[i][j] < smallest_value and j not in assignment:
                 assignment[i] = j
                 smallest_value = matrix[i][j]
 
