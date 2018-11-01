@@ -74,27 +74,27 @@
 	-->
 		<p><b>There are three main parts to this assignment: </b></p>
 		<p style="padding-left:30px;">
-			1) In the first part of the assignment we are given frames of a person playing the piano. Our task is to segment the left and right hand from each frame. 
+			1) In the first part of the assignment we are given frames of a person playing the piano. Our task is to segment the left and right hand from each frame.
 		</p>
-		
+
 		<p><b>The second and third part of this assignment is to track objects in a video.</b></p>
-		
+
 		<p style="padding-left:30px;">
 			2) In the second part, we are given the frames of a video of bats flying through the sky.
 			We are also provided the segmentation of those bats in the image by (x,y) coordinates in a
 			CSV file. We need to use the Kalman Filter to track the bats through each frame.
 			<br/><br/>
-			
+
 			3) Finally, the third part we are given a frames of a video of cells moving in a petri dish.
 			We have to provide a segmentation of the cells and use the Kalman Filter to track each cell
 			through the frames of the video.
 		</p>
-		
+
 		<p><b>For each of these sections, we have to create a visual representation of our results.</b></p>
 
 	<hr>
 	<h2> Method and Implementation </h2>
-	<p>	
+	<p>
 	<!--
 	  Give a concise description of the implemented method. For example, you might
 	  describe the motivation of your idea, the algorithmic steps of your methods, or
@@ -105,25 +105,25 @@
 		<li> Pre-processing </li>
 		<p>
 			Firstly, we load all the image frames into a list of matrices. Then, we calculate the average pixel values for all the frames and store it as a new image. The average image is shown below:<br/>
-			
+
 			<img class="img" src='./result/output_part1/avg_img.png'> <img>
 		</p>
-		
+
 		<li> Segmentation </li>
 		<p>
 			There are two major steps in the segmentation part. First, we compute the differences between image frames and the average image to get the movement energy in each frame. By doing this, we can easily get rid of the static regions (refers to the Figure below).<br/>
-			
+
 			<img class="img" src='./result/output_part1/movement_energy.png'> <img>
-			
+
 			As we can see, there are still lots of noise blobs and the useless body regions left. In the second place, in order to segment the hand regions, we apply the skin color detection method on the result we get (Figure below). Finally, we pick the top three largest blobs, which is the hand and head regions, since these regions are significantly larger than the noise blobs.<br/>
-			
+
 			<img class="img" src='./result/output_part1/skin_color_detection.png'> <img>
 		</p>
-		
+
 		<li> Visual representation </li>
 		<p>
 			Bounding boxes are drawn with the labels of the hand above them (left/right/overlap hand(s)). The example shown below is a special case where two hands are overlapping.<br/>
-			
+
 			<img class="img" src='./result/output_part1/13.jpeg'> <img>
 		</p>
 	  </ol>
@@ -133,37 +133,40 @@
 		<p>
 			Load the frames and localization data and save them into data structures (list/panda dataframe).
 		</p>
-		
+
 		<li>Tracking</li>
 		<ul>
 			<li> Prediction - Kalman Filter </li>
 			<p>
 				A Kalman filter is implemented. There are many exceptions and special conditions that needs to be taken care of. Such as, if the object is moving fast enought that it is estimated to be out of the frame, and doesn't have a measurement in the next frame, will be discarded.
 			</p>
-			
+
 			<li> Data Association - Hungarian/Greedy Algorithm </li>
 			<p>
-				
+				First, we implemented the greedy algorithm to match the predictions with the measurements found in the image. We used the euclidean distance between both sets of (x, y) values to create a cost matrix. Then given the cost matrix we determined the pairs by selecting the smallest for the first prediction and continued through the list of predictions.
+			</p>
+			<p>
+				We also implemented the Hungarian algorithm using a library. However, the algorithm had low efficiency due to the time complexity (O(n^3)) and the pairing did not work better than greedy. This is why we we decided to use greedy.
 			</p>
 		</ul>
 
 		<li>Visual representation</li>
 		<p>
-			After the tracing process, we get a list of sequences respecting to time, which contain the traces for the objects in the image frames. Then, we use <code> cv2.line() </code> to visualize the trace of each object step by step. Finally, we stored the visualized frames into a video which is provided in the Results section. 
+			After the tracing process, we get a list of sequences respecting to time, which contain the traces for the objects in the image frames. Then, we use <code> cv2.line() </code> to visualize the trace of each object step by step. Finally, we stored the visualized frames into a video which is provided in the Results section.
 		</p>
 	  </ol>
 	  <h3> Part 3 - Tracking Cells</h3>
 	  <ol>
 		<li>Pre-processing</li>
 		<p>
-			Same as Part 2. Here, since we only have cell images available, the segmentation method is required. 
+			Same as Part 2. Here, since we only have cell images available, the segmentation method is required.
 		</p>
-		
+
 		<li>Segmentation</li>
 		<p>
-			..............................................
+		      For the segmentation of the cells, we used the OpenCV function findContours. The function returned small sections of each cell. We combined the small sections by filling the bounding box with a solid color then using findContours again. This returned the combined sections for one area of the image which we considered one cell. Then we took the center of the bounding box and used that as the (x, y) position to track the cell.
 		</p>
-		
+
 		<li>Tracking</li>
 		<p>
 			Same as Part 2.
@@ -202,7 +205,7 @@
 		  <li><a href="./code/HW4_TrackingCells"> Tracking Cells </a></li>
 	  </ol>
 	</p>
-	
+
 	<p>
 	  The resources we used:
 	  <ol>
@@ -235,31 +238,31 @@
 	<p>
 		The results for the three parts are shown below:
 	</p>
-	
+
 	<h3> Part 1 - Segmentation of Hands</h3>
 	<video width="800" height="600" controls>
 		<source src="./result/output_part1/output_video.mp4" type="video/mp4">
 	</video>
-	
+
 	<h3> Part 2 - Tracking Bats</h3>
 	<video width="800" height="600" controls>
 		<source src="" type="video/mp4">
 	</video>
-	
+
 	<h3> Part 3 - Tracking Cells</h3>
 	<video width="800" height="600" controls>
 		<source src="" type="video/mp4">
 	</video>
-	
+
 	<hr>
 	<h2> Discussion </h2>
 	<ul>
 		<li> In part 1, we detected the positions of hand in all image frames provided, including the overlapping cases. However, it's still difficult to completely segment the hand blobs due to the variances in pixel color. Different strategies other than skin color detection might be used to gain a higher performance. </li>
 		<li> Kalman Filter </li>
 		<p>
-			We implemented our own Kalman Filter. It is however very limited. For example, validation gate is not implemented. So for data association we have to use greedy method. Also, there is no easy way to estimate several error covariance matrices. And since we are using the ground truth position of the objects for the bat tracking problem, we set measurement error to be small. For the cell tracking project, because we are not sure how different measurement error and prediction error are, the measurement and prediction covariance matrix are set to be identical. The implementation is far from perfect, due to limitation of time. However it still produced satisfactory result. 
+			We implemented our own Kalman Filter. It is however very limited. For example, validation gate is not implemented. So for data association we have to use greedy method. Also, there is no easy way to estimate several error covariance matrices. And since we are using the ground truth position of the objects for the bat tracking problem, we set measurement error to be small. For the cell tracking project, because we are not sure how different measurement error and prediction error are, the measurement and prediction covariance matrix are set to be identical. The implementation is far from perfect, due to limitation of time. However it still produced satisfactory result.
 		</p>
-		<li> In part 3, ............................................... </li>
+		<li> In part 3, the segmentation was extremely difficult given the brightness values and the shape of the cells. The edge of the cell was brighter then the inside which made is hard to distinguish the cell using traditional methods. </li>
 	</ul>
 
 	<!--
@@ -282,7 +285,7 @@
 	Based on your discussion, what are your conclusions?  What is your
 	main message?-->
 	<p>
-		We successfully recognized and visualized the hand positions of the pianist in part 1. For part 2 and 3, the Kalman Filter combined with the Data Association methods works fairly well and we have segmented (part 3), tracked and visualized the traces for all the detected objects. 
+		We successfully recognized and visualized the hand positions of the pianist in part 1. For part 2 and 3, the Kalman Filter combined with the Data Association methods works fairly well and we have segmented (part 3), tracked and visualized the traces for all the detected objects.
 	</p>
 
 	<hr>
