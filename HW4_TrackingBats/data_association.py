@@ -44,19 +44,19 @@ def data_association(predicted_values, measurements):
     cost_matrix = calculate_cost(predicted_values, measurements)
 
     # matching based on cost 
-    # assignment_greedy = greedy(cost_matrix)
+    assignment_greedy = greedy(cost_matrix)
+    return assignment_greedy
+    # hungarian = Hungarian(cost_matrix)
+    # hungarian.calculate()
 
-    hungarian = Hungarian(cost_matrix)
-    hungarian.calculate()
+    # assignment_hungarian = hungarian.get_results()
 
-    assignment_hungarian = hungarian.get_results()
+    # final_assignment = [None] * len(assignment_hungarian)
 
-    final_assignment = [None] * len(assignment_hungarian)
+    # for f in range(len(final_assignment)):
+    #     for a in assignment_hungarian:
+    #         if a[0] == f:
+    #             final_assignment[f] = a[1]
+    #             assignment_hungarian.remove(a)
 
-    for f in range(len(final_assignment)):
-        for a in assignment_hungarian:
-            if a[0] == f:
-                final_assignment[f] = a[1]
-                assignment_hungarian.remove(a)
-
-    return final_assignment
+    # return final_assignment
