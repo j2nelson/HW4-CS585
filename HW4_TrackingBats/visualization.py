@@ -10,23 +10,42 @@ random.seed(1)
         input:
             - img_frames: a sequence of image frames inside the video
             - track_info: a list of tracks each contains a sequence of coordinates ordered by timestamp
-            - timestamps: corresponds to track_info, element[i] = [starting time, ending time] for track i
         output:
             - visualized_frames: a sequence of track-visualized image frames
 '''
-def visualize_track(img_frames, track_info, timestamps):
+def visualize_track(img_frames, track_info):
     visualized_frames = img_frames.copy()
 
     # generate different colors for tracks
-    random_colors = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\
-                    for _ in range(len(track_info))]
+    def random_color():    
+        random_colors = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        return random_colors
+
+    def dfs_drawTrace(track_index, pos_index, color):
+        if track_info[track_index][0][pos_index][0] == -1:
+            return
+
+        for frame_index in range(track_index+1, len(img_frames)):
+            cv2.line(visualized_frames[frame_index], tuple(np.array(track_info[track_index][0][pos_index]).astype(int)), tuple(np.array(track_info[track_index][1][pos_index]).astype(int)), color, 2)
+        
+        track_info[track_index][0][pos_index] = [-1, -1]
+
+        if track_index == len(track_info) - 1:
+            track_info[track_index][1][pos_index] = [-1, -1]
+            return
+            
+        for next_pos_index in range(len(track_info[track_index+1][0])):
+            if track_info[track_index+1][0][next_pos_index][0] != -1 and np.all(track_info[track_index][1][pos_index] == track_info[track_index+1][0][next_pos_index]):
+                dfs_drawTrace(track_index+1, next_pos_index, color)
+                track_info[track_index][1][pos_index] = [-1, -1]
+                break
     
-    for frame_index in range(len(visualized_frames)):
-        for track_index in range(len(track_info)):
-            # visualize the trace when the object currently exist in the frame
-            if timestamps[track_index][0] < frame_index and timestamps[track_index][1] >= frame_index:
-                for index in range(1, frame_index - timestamps[track_index][0] + 1):
-                    cv2.line(visualized_frames[frame_index],tuple(track_info[track_index][index - 1]),tuple(track_info[track_index][index]),random_colors[track_index],2)
+    for track_index in range(len(track_info)):
+        for layer in range(2):
+            for pos_index in range(len(track_info[track_index][layer])):
+                if track_info[track_index][layer][pos_index][0] != -1:
+                    color = random_color()
+                    dfs_drawTrace(track_index, pos_index, color)
     
     return visualized_frames
 
@@ -35,7 +54,7 @@ def output_visualization(dir, frames):
     # write the image to the output file
     if not exists(dir):
         makedirs(dir)
-
+    
     count = 1
     for output in frames:
         cv2.imwrite(dir+str(count)+'.jpeg',output)
@@ -43,7 +62,7 @@ def output_visualization(dir, frames):
 
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter(dir+'/output_video.avi', fourcc, 3.0, (640,480))
+    out = cv2.VideoWriter(dir+'output_video.avi', fourcc, 3.0, (640,480))
     for output in frames:
         output = cv2.resize(output, (640,480))
         out.write(output)
