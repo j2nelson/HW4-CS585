@@ -60,7 +60,7 @@ def kalmanFilter(image_frames, measurements):
 
     # R: MEASUREMENT NOISE COVARIANCE MATRIX
     # should be 0 since using ground truth
-    R = np.eye(noStates) # * 0.01
+    R = np.eye(noStates) * 0.1 # * 0.01
 
     I = np.eye(noStates)
 
