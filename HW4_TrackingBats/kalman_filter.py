@@ -65,7 +65,7 @@ def kalmanFilter(image_frames, measurements):
     # many times P is diagonal, how much deviation you expect in the initialization
     # if dont know how to start use identity matrix
     # first p_k set to R
-    p_k = R
+    p_k = Q
 
     # first x_k set to firstmeasurement 
     x_k = firstMeasurement.values
