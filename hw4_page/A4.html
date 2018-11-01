@@ -255,7 +255,10 @@
 	<h2> Discussion </h2>
 	<ul>
 		<li> In part 1, we detected the positions of hand in all image frames provided, including the overlapping cases. However, it's still difficult to completely segment the hand blobs due to the variances in pixel color. Different strategies other than skin color detection might be used to gain a higher performance. </li>
-		<li> In part 2, ............................................... </li>
+		<li> Kalman Filter </li>
+		<p>
+			We implemented our own Kalman Filter. It is however very limited. For example, validation gate is not implemented. So for data association we have to use greedy method. Also, there is no easy way to estimate several error covariance matrices. And since we are using the ground truth position of the objects for the bat tracking problem, we set measurement error to be small. For the cell tracking project, because we are not sure how different measurement error and prediction error are, the measurement and prediction covariance matrix are set to be identical. The implementation is far from perfect, due to limitation of time. However it still produced satisfactory result. 
+		</p>
 		<li> In part 3, ............................................... </li>
 	</ul>
 
