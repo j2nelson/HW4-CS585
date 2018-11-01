@@ -9,21 +9,24 @@ from os.path import isfile, join, abspath, exists
 from preprocessing import *
 from kalman_filter import *
 from visualization import *
+from segmentation import *
 
 def main():
 
     # load the images
-    images = preprocessing()
+    image_frames = preprocessing()
 
-    # objects
-    tracked_objects = [[1, 3], [2, 1], [5, 5]]
+    measurements = []
+    for frame in image_frames:
+        measurements.append(find_measurements(frame))
 
-    # track using kalman filter
-    for img in range(len(images)):
-        kalman_filter(tracked_objects, images[img])
+    tracks = kalmanFilter(image_frames, measurements)
+    # print(tracks)
 
     # create a video of the tracks in each frame 
-    visualization(tracked_objects, images)
+    visualized_frames = visualize_track(image_frames, tracks)
+    output_visualization('./output/', visualized_frames)
 
-main()
+if __name__ == '__main__':
+    main()
     
