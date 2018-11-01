@@ -21,11 +21,12 @@ def visualize_track(img_frames, track_info):
         random_colors = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         return random_colors
 
-    def dfs_drawTrace(starting_index, track_index, pos_index, color):
+    def dfs_drawTrace(track_index, pos_index, color):
         if track_info[track_index][0][pos_index][0] == -1:
             return
 
-        for frame_index in range(starting_index, track_index+2):
+        trace_end_index = min(track_index + 10, len(img_frames))
+        for frame_index in range(track_index+1, trace_end_index):
             cv2.line(visualized_frames[frame_index], tuple(np.array(track_info[track_index][0][pos_index]).astype(int)), tuple(np.array(track_info[track_index][1][pos_index]).astype(int)), color, 2)
         
         track_info[track_index][0][pos_index] = [-1, -1]
@@ -36,7 +37,7 @@ def visualize_track(img_frames, track_info):
             
         for next_pos_index in range(len(track_info[track_index+1][0])):
             if track_info[track_index+1][0][next_pos_index][0] != -1 and np.all(track_info[track_index][1][pos_index] == track_info[track_index+1][0][next_pos_index]):
-                dfs_drawTrace(starting_index, track_index+1, next_pos_index, color)
+                dfs_drawTrace(track_index+1, next_pos_index, color)
                 track_info[track_index][1][pos_index] = [-1, -1]
                 break
     
@@ -45,7 +46,7 @@ def visualize_track(img_frames, track_info):
             for pos_index in range(len(track_info[track_index][layer])):
                 if track_info[track_index][layer][pos_index][0] != -1:
                     color = random_color()
-                    dfs_drawTrace(track_index, track_index, pos_index, color)
+                    dfs_drawTrace(track_index, pos_index, color)
     
     return visualized_frames
 
